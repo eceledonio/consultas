@@ -24,6 +24,7 @@ class PacienteController extends Controller
         $page_description = __('Nuevo Paciente');
         $paises = Pais::all();
         $seguros = Seguro::all();
+
         return view('backend.paciente.create', compact('paises', 'seguros', 'page_title', 'page_description'));
     }
 
