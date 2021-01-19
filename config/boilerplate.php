@@ -173,8 +173,16 @@ return [
          * Commenting out languages will make them unavailable to the user
          */
         'languages' => [
-            'en' => ['name' => 'English', 'rtl' => false],
-            'es' => ['name' => 'Spanish', 'rtl' => false],
+            'en' => [
+                'name' => 'Inglés',
+                'flag' => 'media/svg/flags/226-united-states.svg',
+                'rtl' => false,
+            ],
+            'es' => [
+                'name' => 'Español',
+                'flag' => 'media/svg/flags/047-dominican-republic.svg',
+                'rtl' => false,
+            ],
         ],
     ],
 

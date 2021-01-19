@@ -16,9 +16,9 @@ class ListUserTest extends TestCase
     /** @test */
     public function only_a_user_with_correct_permissions_can_list_users()
     {
-        $this->actingAs($user = User::factory()->admin()->create());
+        $this->actingAs($user = User::factory()->create());
 
-        $user->syncPermissions(['admin.access.user.list']);
+        $user->syncPermissions(['users.read']);
 
         $this->get('/admin/auth/user')->assertOk();
 
@@ -26,15 +26,15 @@ class ListUserTest extends TestCase
 
         $response = $this->get('/admin/auth/user');
 
-        $response->assertSessionHas('flash_danger', __('You do not have access to do that.'));
+        $response->assertSee(__('No está autorizado para ejecutar esa acción'));
     }
 
     /** @test */
     public function only_a_user_with_correct_permissions_can_view_an_individual_user()
     {
-        $this->actingAs($user = User::factory()->admin()->create());
+        $this->actingAs($user = User::factory()->create());
 
-        $user->syncPermissions(['admin.access.user.list']);
+        $user->syncPermissions(['users.show']);
 
         $newUser = User::factory()->create();
 
@@ -44,6 +44,6 @@ class ListUserTest extends TestCase
 
         $response = $this->get('/admin/auth/user/'.$newUser->id);
 
-        $response->assertSessionHas('flash_danger', __('You do not have access to do that.'));
+        $response->assertSee(__('No está autorizado para ejecutar esa acción'));
     }
 }

@@ -39,14 +39,14 @@ class UpdateUserTest extends TestCase
 
         $this->assertDatabaseMissing('users', [
             'id' => $user->id,
-            'type' => User::TYPE_ADMIN,
-            'name' => 'John Doe',
+            'first_name' => 'John',
+            'last_name' => 'Doe',
             'email' => 'john@example.com',
         ]);
 
         $this->patch("/admin/auth/user/{$user->id}", [
-            'type' => User::TYPE_ADMIN,
-            'name' => 'John Doe',
+            'first_name' => 'John',
+            'last_name' => 'Doe',
             'email' => 'john@example.com',
             'roles' => [
                 Role::whereName(config('boilerplate.access.role.admin'))->first()->id,
@@ -55,8 +55,8 @@ class UpdateUserTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
-            'type' => User::TYPE_ADMIN,
-            'name' => 'John Doe',
+            'first_name' => 'John',
+            'last_name' => 'Doe',
             'email' => 'john@example.com',
         ]);
 
@@ -78,14 +78,14 @@ class UpdateUserTest extends TestCase
 
         $this->logout();
 
-        $otherAdmin = User::factory()->admin()->create();
+        $otherAdmin = User::factory()->create();
         $otherAdmin->assignRole(config('boilerplate.access.role.admin'));
 
         $this->actingAs($otherAdmin);
 
         $response = $this->get("/admin/auth/user/{$admin->id}/edit");
 
-        $response->assertSessionHas('flash_danger', __('Only the administrator can update this user.'));
+        $response->assertSessionHas('flash_danger', __('Solo el Administrador puede actualizar este usuario.'));
     }
 
     /** @test */
@@ -95,18 +95,21 @@ class UpdateUserTest extends TestCase
 
         $this->assertDatabaseMissing('users', [
             'id' => $admin->id,
-            'name' => 'John Doe',
+            'first_name' => 'John',
+            'last_name' => 'Doe',
             'email' => 'john@example.com',
         ]);
 
         $this->patch("/admin/auth/user/{$admin->id}", [
-            'name' => 'John Doe',
+            'first_name' => 'John',
+            'last_name' => 'Doe',
             'email' => 'john@example.com',
         ]);
 
         $this->assertDatabaseHas('users', [
             'id' => $admin->id,
-            'name' => 'John Doe',
+            'first_name' => 'John',
+            'last_name' => 'Doe',
             'email' => 'john@example.com',
         ]);
 
@@ -114,18 +117,19 @@ class UpdateUserTest extends TestCase
 
         // Make sure other admins can not update the master admin
 
-        $otherAdmin = User::factory()->admin()->create();
+        $otherAdmin = User::factory()->create();
         $otherAdmin->assignRole(config('boilerplate.access.role.admin'));
 
         $this->actingAs($otherAdmin);
 
         $response = $this->patch("/admin/auth/user/{$admin->id}", [
             'id' => $admin->id,
-            'name' => 'Changed Name',
+            'first_name' => 'Changed',
+            'last_name' => 'Name',
             'email' => 'changed@example.com',
         ]);
 
-        $response->assertSessionHas('flash_danger', __('Only the administrator can update this user.'));
+        $response->assertSessionHas('flash_danger', __('Solo el Administrador puede actualizar este usuario.'));
 
         $this->assertDatabaseMissing('users', [
             'id' => $admin->id,
@@ -163,21 +167,24 @@ class UpdateUserTest extends TestCase
     /** @test */
     public function only_admin_can_update_roles()
     {
-        $this->actingAs(User::factory()->admin()->create());
+        $this->actingAs(User::factory()->create());
 
-        $user = User::factory()->admin()->create(['name' => 'John Doe']);
-
-        $response = $this->patch("/admin/auth/user/{$user->id}", [
-            'type' => User::TYPE_USER,
-            'name' => 'Jane Doe',
+        $user = User::factory()->create([
+            'first_name' => 'John',
+            'last_name' => 'Doe',
         ]);
 
-        $response->assertSessionHas('flash_danger', __('You do not have access to do that.'));
+        $response = $this->patch("/admin/auth/user/{$user->id}", [
+            'first_name' => 'Jane',
+            'last_name' => 'Doe',
+        ]);
+
+        $response->assertSee(__('No está autorizado para ejecutar esa acción'));
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
-            'type' => User::TYPE_ADMIN,
-            'name' => 'John Doe',
+            'first_name' => 'John',
+            'last_name' => 'Doe',
         ]);
     }
 }

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Backend\User;
 
+use App\Exceptions\GeneralException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\User\UserRequest;
 use App\Models\Auth\User;
 use App\Repositories\Auth\UserRepository;
 use Throwable;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class UserPasswordController.
@@ -29,14 +31,19 @@ class UserPasswordController extends Controller
     }
 
     /**
-     * @param  UserRequest  $request
-     * @param  User  $user
+     * @param UserRequest $request
+     * @param User $user
      *
      * @return mixed
+     * @throws GeneralException
      */
     public function edit(UserRequest $request, User $user)
     {
         $page_title = __('Cambiar contraseña para :name', ['name' => $user->name]);
+
+        if ($user->id == 1 && Auth::user()->id != 1 || $user->id == 2 && Auth::user()->id != 2) {
+            throw new GeneralException(__('Solo el administrador puede cambiar su contraseña.'));
+        }
 
         return view('backend.auth.user.change-password')
             ->withUser($user)

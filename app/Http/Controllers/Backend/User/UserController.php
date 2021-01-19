@@ -157,8 +157,8 @@ class UserController extends Controller
      */
     public function edit(UserRequest $request, User $user)
     {
-        if ($user->id == 1) {
-            throw new GeneralException(__('El usuario no existe.'));
+        if ($user->id == 1 && Auth::user()->id != 1 || $user->id == 2 && Auth::user()->id != 2) {
+            throw new GeneralException(__('Solo el Administrador puede actualizar este usuario.'));
         }
 
         $page_title = __('Administracion de usuarios');
@@ -183,6 +183,10 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user)
     {
+        if ($user->id == 1 && Auth::user()->id != 1 || $user->id == 2 && Auth::user()->id != 2) {
+            throw new GeneralException(__('Solo el Administrador puede actualizar este usuario.'));
+        }
+
         $this->userRepository->update($user, $request->validated());
 
         return redirect()->route('admin.auth.user.edit', $user)->withFlashSuccess(__("El usuario $user->name fue actualizado correctamente."));
@@ -197,6 +201,10 @@ class UserController extends Controller
      */
     public function destroy(UserRequest $request, User $user)
     {
+        if ($user->id == 1 || $user->id == 2) {
+            throw new GeneralException(__('No puedes eliminar el administrador.'));
+        }
+
         $this->userRepository->delete($user);
 
         return redirect()->route('admin.auth.user.index')->withFlashSuccess(__("El usuario $user->name ha sido eliminado correctamente."));

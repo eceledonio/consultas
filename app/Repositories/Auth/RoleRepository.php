@@ -72,8 +72,8 @@ class RoleRepository extends BaseRepository
      */
     public function update(Role $role, array $data = []): Role
     {
-        if ($role->isSuperAdmin()) {
-            throw new GeneralException(__('No puedes modificar el perfil de super administrador.'));
+        if ($role->isAdmin()) {
+            throw new GeneralException(__('No puedes modificar el perfil de administrador.'));
         }
 
         // If the name is changing make sure it doesn't already exist
@@ -106,15 +106,24 @@ class RoleRepository extends BaseRepository
     }
 
     /**
-     * @param  Role  $role
+     * @param  Role $role
      *
      * @return bool
      * @throws GeneralException
+     * @throws \Exception
      */
     public function destroy(Role $role): bool
     {
         if ($role->users()->count()) {
             throw new GeneralException(__('No puede eliminar un perfil con usuarios asociados.'));
+        }
+
+        if ($role->isSuperAdmin()) {
+            return redirect()->route('admin.auth.role.index')->withFlashDanger(__('No puede eliminar el Perfil de Super Administrador.'));
+        }
+
+        if ($role->isAdmin()) {
+            return redirect()->route('admin.auth.role.index')->withFlashDanger(__('No puede eliminar el Perfil de Administrador.'));
         }
 
         if ($this->deleteById($role->id)) {

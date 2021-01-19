@@ -20,7 +20,7 @@ class UserSessionController extends Controller
     public function update(UserRequest $request, User $user)
     {
         if ($user->id === auth()->id()) {
-            return redirect()->back()->withFlashDanger(__('No puedes eliminar tu propia sesión.'));
+            return redirect()->back()->withFlashDanger(__('No puedes limpiar tu propia sesión.'));
         }
 
         $user->update(['to_be_logged_out' => true]);

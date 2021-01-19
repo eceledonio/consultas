@@ -17,6 +17,8 @@ class Permission extends SpatiePermission implements Recordable
     use RecordableTrait,
         HasFactory;
 
+    protected $guarded = [];
+
     public function module() : BelongsTo
     {
         return $this->belongsTo(Module::class, 'module_id');

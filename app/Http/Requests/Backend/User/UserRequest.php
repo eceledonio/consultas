@@ -52,7 +52,10 @@ class UserRequest extends FormRequest
                 return $this->user()->can('users.deactivate');
             }
 
-            case 'admin.auth.user.clear-session':
+            case 'admin.auth.user.clear-session': {
+                return $this->user()->can('users.clear-session');
+            }
+
             case 'admin.auth.user.destroy': {
                 return $this->user()->can('users.delete');
             }

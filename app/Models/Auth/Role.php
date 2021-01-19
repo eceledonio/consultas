@@ -20,6 +20,8 @@ class Role extends SpatieRole implements Recordable
         HasFactory,
         RoleMethod;
 
+    protected $guarded = [];
+
     /**
      * @var string[]
      */

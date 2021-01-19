@@ -15,6 +15,7 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Throwable;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class UserRepository.
@@ -202,7 +203,7 @@ class UserRepository extends BaseRepository
                 'email' => $data['email'],
             ]);
 
-            if (! $user->isSuperAdmin()) {
+            if (! $user->isAdmin()) {
                 // Replace selected roles/permissions
                 $user->syncRoles($data['roles'] ?? []);
 
@@ -254,6 +255,10 @@ class UserRepository extends BaseRepository
      */
     public function updatePassword(User $user, $data, $expired = false): User
     {
+        if ($user->id == 1 && Auth::user()->id != 1 || $user->id == 2 && Auth::user()->id != 2) {
+            throw new GeneralException(__('Solo el administrador puede cambiar su contraseña.'));
+        }
+
         if (isset($data['current_password'])) {
             throw_if(
                 ! Hash::check($data['current_password'], $user->password),
@@ -284,8 +289,8 @@ class UserRepository extends BaseRepository
             throw new GeneralException(__('No puedes hacerte eso a tí mismo.'));
         }
 
-        if ($status === 0 && $user->isSuperAdmin()) {
-            throw new GeneralException(__('No puedes desactivar la cuenta del super administrador.'));
+        if ($status === 0 && $user->isAdmin()) {
+            throw new GeneralException(__('No puedes desactivar la cuenta del administrador.'));
         }
 
         $user->active = $status;

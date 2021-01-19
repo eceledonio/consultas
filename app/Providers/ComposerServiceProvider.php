@@ -22,6 +22,10 @@ class ComposerServiceProvider extends ServiceProvider
             $view->with('logged_in_user', auth()->user());
         });
 
+        View::composer('*', function ($view) {
+            $view->with('lang', app()->getLocale());
+        });
+
         View::composer(['frontend.index', 'frontend.layout.default'], function ($view) use ($announcementRepository) {
             $view->with('announcements', $announcementRepository->getForFrontend());
         });

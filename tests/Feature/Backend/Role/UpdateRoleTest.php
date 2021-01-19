@@ -39,20 +39,19 @@ class UpdateRoleTest extends TestCase
         $this->loginAsAdmin();
 
         $this->patch("/admin/auth/role/{$role->id}", [
-            'type' => User::TYPE_ADMIN,
             'name' => 'new name',
+            'description' => 'new name description',
             'permissions' => [
-                Permission::whereName('admin.access.user.list')->first()->id,
+                Permission::whereName('roles.create')->first()->id,
             ],
         ]);
 
         $this->assertDatabaseHas('roles', [
-            'type' => User::TYPE_ADMIN,
             'name' => 'new name',
         ]);
 
         $this->assertDatabaseHas('role_has_permissions', [
-            'permission_id' => Permission::whereName('admin.access.user.list')->first()->id,
+            'permission_id' => Permission::whereName('roles.create')->first()->id,
             'role_id' => Role::whereName('new name')->first()->id,
         ]);
 
@@ -70,7 +69,7 @@ class UpdateRoleTest extends TestCase
             'name' => 'new name',
         ]);
 
-        $response->assertSessionHas(['flash_danger' => __('You can not edit the Administrator role.')]);
+        $response->assertSessionHas(['flash_danger' => __('No puedes modificar el perfil de administrador.')]);
 
         $this->assertDatabaseMissing('roles', [
             'name' => 'new name',
@@ -96,7 +95,7 @@ class UpdateRoleTest extends TestCase
 
         $response = $this->get("/admin/auth/role/{$role->id}/edit");
 
-        $response->assertSessionHas(['flash_danger' => __('You can not edit the Administrator role.')]);
+        $response->assertSessionHas(['flash_danger' => __('No puedes modificar el Perfil de Administrador.')]);
     }
 
     /** @test */
@@ -108,13 +107,13 @@ class UpdateRoleTest extends TestCase
 
         $response = $this->get("/admin/auth/role/{$role->id}/edit");
 
-        $response->assertSessionHas('flash_danger', __('You do not have access to do that.'));
+        $response->assertSee(__('No está autorizado para ejecutar esa acción'));
     }
 
     /** @test */
     public function only_admin_can_update_roles()
     {
-        $this->actingAs(User::factory()->admin()->create());
+        $this->actingAs(User::factory()->create());
 
         $role = Role::factory()->create(['name' => 'current name']);
 
@@ -122,7 +121,7 @@ class UpdateRoleTest extends TestCase
             'name' => 'new name',
         ]);
 
-        $response->assertSessionHas('flash_danger', __('You do not have access to do that.'));
+        $response->assertSee(__('No está autorizado para ejecutar esa acción'));
 
         $this->assertDatabaseHas(config('permission.table_names.roles'), [
             'id' => $role->id,

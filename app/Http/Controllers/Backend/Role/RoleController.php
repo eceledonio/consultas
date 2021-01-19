@@ -109,8 +109,8 @@ class RoleController extends Controller
         $page_title = 'Administración de Perfiles';
         $page_description = "Modificando Perfil $role->name";
 
-        if ($role->isSuperAdmin()) {
-            return redirect()->route('admin.auth.role.index')->withFlashDanger(__('No puedes modificar el Perfil de Super Administrador.'));
+        if ($role->isAdmin()) {
+            return redirect()->route('admin.auth.role.index')->withFlashDanger(__('No puedes modificar el Perfil de Administrador.'));
         }
 
         $permissions = Permission::with('module')->orderBy('permissions.id', 'ASC')->get();

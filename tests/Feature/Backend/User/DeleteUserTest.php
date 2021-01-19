@@ -31,7 +31,7 @@ class DeleteUserTest extends TestCase
 
         $response = $this->get('/admin/auth/user/deleted');
 
-        $response->assertSessionHas('flash_danger', __('You do not have access to do that.'));
+        $response->assertSee(__('No está autorizado para ejecutar esa acción'));
     }
 
     /** @test */
@@ -45,7 +45,7 @@ class DeleteUserTest extends TestCase
 
         $response = $this->delete("/admin/auth/user/{$user->id}");
 
-        $response->assertSessionHas(['flash_success' => __('The user was successfully deleted.')]);
+        $response->assertSessionHas(['flash_success' => __("El usuario $user->name ha sido eliminado correctamente.")]);
 
         $this->assertSoftDeleted('users', ['id' => $user->id]);
 
@@ -67,7 +67,7 @@ class DeleteUserTest extends TestCase
 
         $response = $this->delete("/admin/auth/user/{$user->id}/permanently-delete");
 
-        $response->assertSessionHas(['flash_success' => __('The user was permanently deleted.')]);
+        $response->assertSessionHas(['flash_success' => __('El usuario ha sido eliminado permanentemente.')]);
 
         $this->assertDatabaseMissing('users', ['id' => $user->id]);
 
@@ -101,7 +101,7 @@ class DeleteUserTest extends TestCase
 
         $response = $this->patch("/admin/auth/user/{$user->id}/restore");
 
-        $response->assertSessionHas(['flash_success' => __('The user was successfully restored.')]);
+        $response->assertSessionHas(['flash_success' => __('El usuario ha sido restaurado correctamente.')]);
 
         $this->assertDatabaseHas('users', ['id' => $user->id]);
     }
@@ -110,13 +110,13 @@ class DeleteUserTest extends TestCase
     public function the_master_administrator_can_not_be_deleted()
     {
         $admin = $this->getMasterAdmin();
-        $user = User::factory()->admin()->create();
+        $user = User::factory()->create();
         $user->assignRole($this->getAdminRole());
         $this->actingAs($user);
 
         $response = $this->delete('/admin/auth/user/'.$admin->id);
 
-        $response->assertSessionHas('flash_danger', __('You can not delete the master administrator.'));
+        $response->assertSessionHas('flash_danger', __('No puedes eliminar el administrador.'));
 
         $this->assertDatabaseHas('users', ['id' => $admin->id, 'deleted_at' => null]);
     }
@@ -124,13 +124,13 @@ class DeleteUserTest extends TestCase
     /** @test */
     public function a_user_can_not_delete_themselves()
     {
-        $user = User::factory()->admin()->create();
+        $user = User::factory()->create();
         $user->assignRole($this->getAdminRole());
         $this->actingAs($user);
 
         $response = $this->delete('/admin/auth/user/'.$user->id);
 
-        $response->assertSessionHas('flash_danger', __('You can not delete yourself.'));
+        $response->assertSessionHas('flash_danger', __('No puedes eliminarte a tí mismo.'));
 
         $this->assertDatabaseHas('users', ['id' => $user->id, 'deleted_at' => null]);
     }
@@ -144,6 +144,6 @@ class DeleteUserTest extends TestCase
 
         $response = $this->delete("/admin/auth/user/{$user->id}");
 
-        $response->assertSessionHas('flash_danger', __('You do not have access to do that.'));
+        $response->assertSee(__('No está autorizado para ejecutar esa acción'));
     }
 }

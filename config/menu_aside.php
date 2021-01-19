@@ -122,7 +122,6 @@ return [
             'root' => true,
             'new-tab' => false,
         ],
-
         [
             'title' => 'Paciente',
             'icon' => 'media/svg/icons/Communication/Contact1.svg',

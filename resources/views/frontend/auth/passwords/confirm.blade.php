@@ -21,7 +21,8 @@
                                         ->class('form-control form-control-lg')
                                         ->addClass($errors->has('password') ? 'is-invalid' : '')
                                         ->placeholder(__('Contraseña'))
-                                        ->attribute('maxlength', 100) }}
+                                        ->attribute('maxlength', 100)
+                                        ->autofocus() }}
                                 </div>
                             </div>
 

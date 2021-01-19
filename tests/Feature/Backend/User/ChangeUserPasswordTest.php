@@ -17,9 +17,9 @@ class ChangeUserPasswordTest extends TestCase
     /** @test */
     public function only_a_user_with_correct_permissions_can_visit_the_change_user_password_page()
     {
-        $this->actingAs($user = User::factory()->admin()->create());
+        $this->actingAs($user = User::factory()->create());
 
-        $user->syncPermissions(['admin.access.user.change-password']);
+        $user->syncPermissions(['users.update']);
 
         $newUser = User::factory()->create();
 
@@ -29,15 +29,15 @@ class ChangeUserPasswordTest extends TestCase
 
         $response = $this->get('/admin/auth/user/'.$newUser->id.'/password/change');
 
-        $response->assertSessionHas('flash_danger', __('You do not have access to do that.'));
+        $response->assertSee(__('No está autorizado para ejecutar esa acción'));
     }
 
     /** @test */
     public function only_a_user_with_correct_permissions_can_change_a_users_password()
     {
-        $this->actingAs($user = User::factory()->admin()->create());
+        $this->actingAs($user = User::factory()->create());
 
-        $user->syncPermissions(['admin.access.user.change-password']);
+        $user->syncPermissions(['users.update']);
 
         $newUser = User::factory()->create();
 
@@ -46,7 +46,7 @@ class ChangeUserPasswordTest extends TestCase
             'password_confirmation' => 'OC4Nzu270N!QBVi%U%qX',
         ]);
 
-        $response->assertSessionHas('flash_success', __('The user\'s password was successfully updated.'));
+        $response->assertSessionHas('flash_success', __("La contraseña del usuario $newUser->name fue actualizada correctamente."));
 
         $user->syncPermissions([]);
 
@@ -55,7 +55,7 @@ class ChangeUserPasswordTest extends TestCase
             'password_confirmation' => 'OC4Nzu270N!QBVi%U%qX',
         ]);
 
-        $response->assertSessionHas('flash_danger', __('You do not have access to do that.'));
+        $response->assertSee(__('No está autorizado para ejecutar esa acción'));
     }
 
     /** @test */
@@ -91,15 +91,15 @@ class ChangeUserPasswordTest extends TestCase
     /** @test */
     public function only_the_master_admin_can_view_the_change_password_screen()
     {
-        $this->actingAs($user = User::factory()->admin()->create());
+        $this->actingAs($user = User::factory()->create());
 
-        $user->syncPermissions(['admin.access.user.change-password']);
+        $user->syncPermissions(['users.update']);
 
         $admin = $this->getMasterAdmin();
 
         $response = $this->get('/admin/auth/user/'.$admin->id.'/password/change');
 
-        $response->assertSessionHas('flash_danger', __('Only the administrator can change their password.'));
+        $response->assertSessionHas('flash_danger', __('Solo el administrador puede cambiar su contraseña.'));
 
         $this->logout();
 
@@ -111,9 +111,9 @@ class ChangeUserPasswordTest extends TestCase
     /** @test */
     public function only_the_master_admin_can_change_their_password()
     {
-        $this->actingAs($user = User::factory()->admin()->create());
+        $this->actingAs($user = User::factory()->create());
 
-        $user->syncPermissions(['admin.access.user.change-password']);
+        $user->syncPermissions(['users.update']);
 
         $admin = $this->getMasterAdmin();
 
@@ -122,7 +122,7 @@ class ChangeUserPasswordTest extends TestCase
             'password_confirmation' => 'OC4Nzu270N!QBVi%U%qX',
         ]);
 
-        $response->assertSessionHas('flash_danger', __('Only the administrator can change their password.'));
+        $response->assertSessionHas('flash_danger', __('Solo el administrador puede cambiar su contraseña.'));
 
         $this->logout();
 
@@ -133,7 +133,7 @@ class ChangeUserPasswordTest extends TestCase
             'password_confirmation' => 'OC4Nzu270N!QBVi%U%qX',
         ]);
 
-        $response->assertSessionHas('flash_success', __('The user\'s password was successfully updated.'));
+        $response->assertSessionHas('flash_success', __("La contraseña del usuario $admin->name fue actualizada correctamente."));
         $this->assertTrue(Hash::check('OC4Nzu270N!QBVi%U%qX', $admin->fresh()->password));
     }
 
@@ -151,7 +151,7 @@ class ChangeUserPasswordTest extends TestCase
             'password_confirmation' => 'OC4Nzu270N!QBVi%U%qX',
         ]);
 
-        $response->assertSessionHas('flash_success', __('The user\'s password was successfully updated.'));
+        $response->assertSessionHas('flash_success', __("La contraseña del usuario $user->name fue actualizada correctamente."));
         $this->assertTrue(Hash::check('OC4Nzu270N!QBVi%U%qX', $user->fresh()->password));
     }
 
@@ -176,7 +176,7 @@ class ChangeUserPasswordTest extends TestCase
 
         $response->assertSessionHasErrors();
         $errors = session('errors');
-        $this->assertSame($errors->get('password')[0], __('You can not set a password that you have previously used within the last 3 times.'));
+        $this->assertSame($errors->get('password')[0], __('No puede establecer una contraseña que haya utilizado anteriormente las últimas 3 veces.'));
         $this->assertTrue(Hash::check('OC4Nzu270N!QBVi%U%qX_02', $user->fresh()->password));
     }
 }

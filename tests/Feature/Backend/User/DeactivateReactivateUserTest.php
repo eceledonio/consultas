@@ -18,9 +18,9 @@ class DeactivateReactivateUserTest extends TestCase
     /** @test */
     public function only_a_user_with_correct_permissions_can_visit_deactivated_users()
     {
-        $this->actingAs($user = User::factory()->admin()->create());
+        $this->actingAs($user = User::factory()->create());
 
-        $user->syncPermissions(['admin.access.user.reactivate']);
+        $user->syncPermissions(['users.deactivate']);
 
         $this->get('/admin/auth/user/deactivated')->assertOk();
 
@@ -28,7 +28,7 @@ class DeactivateReactivateUserTest extends TestCase
 
         $response = $this->get('/admin/auth/user/deactivated');
 
-        $response->assertSessionHas('flash_danger', __('You do not have access to do that.'));
+        $response->assertSee(__('No está autorizado para ejecutar esa acción'));
     }
 
     /** @test */
@@ -36,9 +36,9 @@ class DeactivateReactivateUserTest extends TestCase
     {
         Event::fake();
 
-        $this->actingAs($user = User::factory()->admin()->create());
+        $this->actingAs($user = User::factory()->create());
 
-        $user->syncPermissions(['admin.access.user.reactivate']);
+        $user->syncPermissions(['users.deactivate']);
 
         $deactivatedUser = User::factory()->inactive()->create();
 
@@ -60,7 +60,7 @@ class DeactivateReactivateUserTest extends TestCase
     /** @test */
     public function a_user_without_the_correct_permissions_can_not_reactivate_a_user()
     {
-        $this->actingAs(User::factory()->admin()->create());
+        $this->actingAs(User::factory()->create());
 
         $deactivatedUser = User::factory()->inactive()->create();
 
@@ -71,7 +71,7 @@ class DeactivateReactivateUserTest extends TestCase
 
         $response = $this->patch('/admin/auth/user/'.$deactivatedUser->id.'/mark/1');
 
-        $response->assertSessionHas('flash_danger', __('You do not have access to do that.'));
+        $response->assertSee(__('No está autorizado para ejecutar esa acción'));
 
         $this->assertDatabaseHas('users', [
             'id' => $deactivatedUser->id,
@@ -84,9 +84,9 @@ class DeactivateReactivateUserTest extends TestCase
     {
         Event::fake();
 
-        $this->actingAs($user = User::factory()->admin()->create());
+        $this->actingAs($user = User::factory()->create());
 
-        $user->syncPermissions(['admin.access.user.deactivate']);
+        $user->syncPermissions(['users.deactivate']);
 
         $activeUser = User::factory()->active()->create();
 
@@ -108,7 +108,7 @@ class DeactivateReactivateUserTest extends TestCase
     /** @test */
     public function a_user_without_the_correct_permissions_can_not_deactivate_a_user()
     {
-        $this->actingAs(User::factory()->admin()->create());
+        $this->actingAs(User::factory()->create());
 
         $activeUser = User::factory()->active()->create();
 
@@ -119,7 +119,7 @@ class DeactivateReactivateUserTest extends TestCase
 
         $response = $this->patch('/admin/auth/user/'.$activeUser->id.'/mark/0');
 
-        $response->assertSessionHas('flash_danger', __('You do not have access to do that.'));
+        $response->assertSee(__('No está autorizado para ejecutar esa acción'));
 
         $this->assertDatabaseHas('users', [
             'id' => $activeUser->id,
@@ -130,24 +130,24 @@ class DeactivateReactivateUserTest extends TestCase
     /** @test */
     public function a_user_can_not_deactivate_themselves()
     {
-        $this->actingAs($user = User::factory()->admin()->create());
+        $this->actingAs($user = User::factory()->create());
 
-        $user->syncPermissions(['admin.access.user.deactivate']);
+        $user->syncPermissions(['users.deactivate']);
 
         $response = $this->patch('/admin/auth/user/'.$user->id.'/mark/0');
 
-        $response->assertSessionHas('flash_danger', __('You can not do that to yourself.'));
+        $response->assertSessionHas('flash_danger', __('No puedes hacerte eso a tí mismo.'));
     }
 
     /** @test */
     public function a_user_can_not_deactivate_the_master_admin()
     {
-        $this->actingAs($user = User::factory()->admin()->create());
+        $this->actingAs($user = User::factory()->create());
 
-        $user->syncPermissions(['admin.access.user.deactivate']);
+        $user->syncPermissions(['users.deactivate']);
 
         $response = $this->patch('/admin/auth/user/'.$this->getMasterAdmin()->id.'/mark/0');
 
-        $response->assertSessionHas('flash_danger', __('You can not deactivate the administrator account.'));
+        $response->assertSessionHas('flash_danger', __('No puedes desactivar la cuenta del administrador.'));
     }
 }

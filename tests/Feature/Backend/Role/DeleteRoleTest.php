@@ -43,7 +43,7 @@ class DeleteRoleTest extends TestCase
 
         $response = $this->delete('/admin/auth/role/'.$role->id);
 
-        $response->assertSessionHas(['flash_danger' => __('You can not delete the Administrator role.')]);
+        $response->assertSessionHas(['flash_danger' => __('No puede eliminar un perfil con usuarios asociados.')]);
 
         $this->assertDatabaseHas(config('permission.table_names.roles'), ['id' => $role->id]);
     }
@@ -59,7 +59,7 @@ class DeleteRoleTest extends TestCase
 
         $response = $this->delete('/admin/auth/role/'.$role->id);
 
-        $response->assertSessionHas(['flash_danger' => __('You can not delete a role with associated users.')]);
+        $response->assertSessionHas(['flash_danger' => __('No puede eliminar un perfil con usuarios asociados.')]);
 
         $this->assertDatabaseHas(config('permission.table_names.roles'), ['id' => $role->id]);
     }
@@ -67,13 +67,15 @@ class DeleteRoleTest extends TestCase
     /** @test */
     public function only_admin_can_delete_roles()
     {
-        $this->actingAs(User::factory()->admin()->create());
+        $user = User::factory()->create();
+
+        $this->actingAs($user);
 
         $role = Role::factory()->create();
 
         $response = $this->delete('/admin/auth/role/'.$role->id);
 
-        $response->assertSessionHas('flash_danger', __('You do not have access to do that.'));
+        $response->assertSee(__('No está autorizado para ejecutar esa acción'));
 
         $this->assertDatabaseHas(config('permission.table_names.roles'), ['id' => $role->id]);
     }

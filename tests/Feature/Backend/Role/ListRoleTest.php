@@ -24,10 +24,10 @@ class ListRoleTest extends TestCase
     /** @test */
     public function only_admin_can_view_roles()
     {
-        $this->actingAs(User::factory()->admin()->create());
+        $this->actingAs(User::factory()->create());
 
         $response = $this->get('/admin/auth/role');
 
-        $response->assertSessionHas('flash_danger', __('You do not have access to do that.'));
+        $response->assertSee(__('No está autorizado para ejecutar esa acción'));
     }
 }

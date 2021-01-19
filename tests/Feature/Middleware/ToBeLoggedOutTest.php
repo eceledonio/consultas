@@ -14,6 +14,7 @@ class ToBeLoggedOutTest extends TestCase
     public function the_user_can_be_forced_logged_out()
     {
         $user = User::factory()->create(['to_be_logged_out' => false]);
+        $user->givePermissionTo('dashboard.read');
 
         $this->actingAs($user);
 

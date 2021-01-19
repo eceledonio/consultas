@@ -35,7 +35,7 @@ class CreateUserTest extends TestCase
 
         $response = $this->post('/admin/auth/user');
 
-        $response->assertSessionHasErrors(['type', 'name', 'email', 'password']);
+        $response->assertSessionHasErrors(['first_name', 'last_name', 'email', 'password']);
     }
 
     /** @test */
@@ -60,8 +60,8 @@ class CreateUserTest extends TestCase
         $this->loginAsAdmin();
 
         $response = $this->post('/admin/auth/user', [
-            'type' => User::TYPE_ADMIN,
-            'name' => 'John Doe',
+            'first_name' => 'John',
+            'last_name' => 'Doe',
             'email' => 'john@example.com',
             'password' => 'OC4Nzu270N!QBVi%U%qX',
             'password_confirmation' => 'OC4Nzu270N!QBVi%U%qX',
@@ -74,8 +74,8 @@ class CreateUserTest extends TestCase
         $this->assertDatabaseHas(
             'users',
             [
-                'type' => User::TYPE_ADMIN,
-                'name' => 'John Doe',
+                'first_name' => 'John',
+                'last_name' => 'Doe',
                 'email' => 'john@example.com',
                 'active' => true,
             ]
@@ -87,7 +87,9 @@ class CreateUserTest extends TestCase
             'model_id' => User::whereEmail('john@example.com')->first()->id,
         ]);
 
-        $response->assertSessionHas(['flash_success' => __('The user was successfully created.')]);
+        $user = User::whereEmail('john@example.com')->first();
+
+        $response->assertSessionHas(['flash_success' => __("El usuario $user->name ha sido creado correctamente.")]);
 
         Event::assertDispatched(UserCreated::class);
     }
@@ -100,8 +102,8 @@ class CreateUserTest extends TestCase
         $this->loginAsAdmin();
 
         $response = $this->post('/admin/auth/user', [
-            'type' => User::TYPE_ADMIN,
-            'name' => 'John Doe',
+            'first_name' => 'John',
+            'last_name' => 'Doe',
             'email' => 'john@example.com',
             'password' => 'OC4Nzu270N!QBVi%U%qX',
             'password_confirmation' => 'OC4Nzu270N!QBVi%U%qX',
@@ -111,9 +113,9 @@ class CreateUserTest extends TestCase
             ],
         ]);
 
-        $response->assertSessionHas(['flash_success' => __('The user was successfully created.')]);
+        $user = User::whereEmail('john@example.com')->first();
 
-        $user = User::where('email', 'john@example.com')->first();
+        $response->assertSessionHas(['flash_success' => __("El usuario $user->name ha sido creado correctamente.")]);
 
         Notification::assertSentTo($user, VerifyEmail::class);
     }
@@ -121,10 +123,10 @@ class CreateUserTest extends TestCase
     /** @test */
     public function only_admin_can_create_users()
     {
-        $this->actingAs(User::factory()->admin()->create());
+        $this->actingAs(User::factory()->create());
 
         $response = $this->get('/admin/auth/user/create');
 
-        $response->assertSessionHas('flash_danger', __('You do not have access to do that.'));
+        $response->assertSee(__('No está autorizado para ejecutar esa acción'));
     }
 }

@@ -16,6 +16,7 @@ class VerificationTest extends TestCase
     public function an_unverified_user_cannot_access_dashboard()
     {
         $user = User::factory()->unconfirmed()->create();
+        $user->givePermissionTo('dashboard.read');
 
         $this->actingAs($user);
 

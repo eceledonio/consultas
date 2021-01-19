@@ -33,7 +33,6 @@ class DatabaseSeeder extends Seeder
             AnnouncementSeeder::class,
             WorldTableSeeder::class,
             TiposTableSeeder::class,
-            CountriesTableSeeder::class,
         ]);
 
         Model::reguard();
