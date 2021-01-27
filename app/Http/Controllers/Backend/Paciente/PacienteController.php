@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Backend\Paciente;
 
-use App\Models\Paciente\Paciente;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PacienteRequest;
+use App\Models\Paciente\Paciente;
 use App\Models\Paciente\Pais;
 use App\Models\Paciente\Seguro;
+use Illuminate\Http\Request;
 
 class PacienteController extends Controller
 {
@@ -28,7 +29,7 @@ class PacienteController extends Controller
         return view('backend.paciente.create', compact('paises', 'seguros', 'page_title', 'page_description'));
     }
 
-    public function store(Request $request)
+    public function store(PacienteRequest $request)
     {
         //dd($request->all());
         $paciente = new Paciente;
@@ -44,7 +45,5 @@ class PacienteController extends Controller
         $paciente->save();
 
         return redirect()->route('admin.paciente.create')->withFlashSuccess(__('El paciente se ha creado correctamente.'));
-
     }
 }
-

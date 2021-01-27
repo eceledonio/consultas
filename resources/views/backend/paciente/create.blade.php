@@ -28,7 +28,7 @@
                         <div class="form-group">
                             <label>Nombres
                                 <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="nombres" placeholder="Nombres">
+                            <input type="text" class="form-control" name="nombres" placeholder="Nombres" value="{{ old('nombres') }}">
                         </div>
                     </div>
 
@@ -36,7 +36,7 @@
                         <div class="form-group">
                             <label>Apellidos
                                 <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="apellidos" placeholder="Apellidos"/>
+                            <input type="text" class="form-control" name="apellidos" placeholder="Apellidos" value="{{ old('apellidos') }}">
                         </div>
                     </div>
                 </div>
@@ -46,8 +46,8 @@
                     <div class="col-6">
                         <label for="sexo">Sexo<span class="text-danger">*</span></label>
                         <select class="form-control" name="sexo" id="sexo">
-                            <option>Masculino</option>
-                            <option>Femenino</option>
+                            <option value="masculino" {{ old('sexo') == 'masculino' ? 'selected' : '' }}>Masculino</option>
+                            <option value="femenino" {{ old('sexo') == 'femenino' ? 'selected' : '' }}>Femenino</option>
                         </select>
                     </div>
 
@@ -67,23 +67,24 @@
                     </div>
                 </div>
 
+
                 <div class="row">
                     <div class="col-6">
                         <div class="form-group">
-                            <label>Pais de nacimento</label>
-                            <select class="form-control selectpicker" data-show-subtext="true" data-live-search="true" name="pais" id="paises">
-                                <option value="" selected disabled >Seleccionar pais</option>
-                                @foreach($paises as $pais)
-                                    <option value="{{ $pais->id }}">{{ $pais->descripcion }}</option>
-                                @endforeach
-                            </select>
+                            <label>Pais de nacimento
+                                <span class="text-danger">*</span>
+                            </label>
+                            {{ html()->select('pais', $paises->pluck('descripcion', 'id'))
+                                ->class('form-control selectpicker')
+                                ->placeholder('Seleccione un pais')
+                                ->id('paises')->attribute('data-live-search', true) }}
                         </div>
                     </div>
 
                     <div class="col-6">
                         <div class="form-group">
                             <label>Dirección</label>
-                            <input type="text" class="form-control" name="direccion" placeholder="Direccion"/>
+                            <input type="text" class="form-control" name="direccion" placeholder="Direccion" value="{{ old('direccion') }}">
                         </div>
                     </div>
                 </div>
@@ -93,24 +94,22 @@
                     <div class="col-6">
                         <div class="form-group">
                             <label>Celular</label>
-                            <input type="text" class="form-control celular" name="celular">
+                            <input type="text" class="form-control celular" name="celular" value="{{ old('celular') }}">
                         </div>
                     </div>
 
                     <div class="col-6">
                         <div class="form-group">
                             <label>ARS</label>
-                            <select class="form-control selectpicker" data-show-subtext="true" data-live-search="true" name="ars_id" id="seguros">
-                                <option value="" selected disabled >Seleccionar ARS</option>
-                                @foreach($seguros as $seguro)
-                                    <option value="{{ $seguro->id }}">{{ $seguro->nombre }}</option>
-                                @endforeach
-                            </select>
+                            {{ html()->select('ars_id', $seguros->pluck('nombre', 'id'))
+                                ->class('form-control selectpicker')
+                                ->placeholder('Seleccionar ARS')
+                                ->id('seguros')
+                                ->attribute('data-live-search', true) }}
 
                         </div>
                     </div>
                 </div>
-
 
             </x-slot>
             <x-slot name="footer">
