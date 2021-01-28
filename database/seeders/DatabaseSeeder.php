@@ -31,8 +31,9 @@ class DatabaseSeeder extends Seeder
             SettingsTableSeeder::class,
             AuthTableSeeder::class,
             AnnouncementSeeder::class,
-            WorldTableSeeder::class,
+            //WorldTableSeeder::class,
             TiposTableSeeder::class,
+            CountriesTableSeeder::class,
         ]);
 
         Model::reguard();

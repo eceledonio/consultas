@@ -3,19 +3,19 @@
 @section('title', __('Nuevo Usuario'))
 
 @section('content')
-    <x-forms.post :action="route('admin.auth.user.store')">
+    <x-forms.post :action="route('admin.auth.user.store')" xmlns="">
         <x-backend.card>
             <x-slot name="header">
                 {{ __('Nuevo Usuario') }}
             </x-slot>
 
-            <x-slot name="headerActions">
-                <x-utils.link
-                    icon="la la-arrow-left"
-                    class="btn btn-light-danger font-weight-lighter mr-2"
-                    :href="route('admin.auth.user.index')"
-                    :text="__('Regresar')" />
-            </x-slot>
+                <x-slot name="headerActions">
+                    <x-utils.link
+                        icon="la la-arrow-left"
+                        class="btn btn-light-danger font-weight-lighter mr-2"
+                        :href="route('admin.auth.user.index')"
+                        :text="__('Regresar')"></x-utils.link>
+                </x-slot>
 
             <x-slot name="body">
                 <div class="row">

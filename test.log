@@ -1,0 +1,10 @@
+Warning: TTY mode is not supported on Windows platform.
+
+  [30;42;1m PASS [39;49;22m[39m Tests\Feature\Backend\Paciente\CrearPacienteTest[39m
+  [32;1m✓[39;22m[39m [2man admin can access the create patient page[22m[39m
+  [32;1m✓[39;22m[39m [2mcreate patient requires validation[22m[39m
+  [32;1m✓[39;22m[39m [2madmin can create new patient[22m[39m
+
+  [37;1mTests:  [39;22m[32;1m3 passed[39;22m
+  [37;1mTime:   [39;22m[39m0.81s[39m
+

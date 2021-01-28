@@ -31,6 +31,7 @@ class PacienteController extends Controller
 
     public function store(PacienteRequest $request)
     {
+
         //dd($request->all());
         $paciente = new Paciente;
         $paciente->nombres = $request->nombres;
