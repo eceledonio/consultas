@@ -14,7 +14,7 @@
                         icon="la la-arrow-left"
                         class="btn btn-light-danger font-weight-lighter mr-2"
                         :href="route('admin.auth.user.index')"
-                        :text="__('Regresar')"></x-utils.link>
+                        :text="__('Regresar')" />
                 </x-slot>
 
             <x-slot name="body">

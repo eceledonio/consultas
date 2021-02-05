@@ -2,11 +2,17 @@
 
 namespace App\Models\Paciente;
 
+use Altek\Accountant\Contracts\Recordable;
+use Altek\Accountant\Recordable as RecordableTrait;
+use Altek\Eventually\Eventually;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Paciente extends Model
+class Paciente extends Model implements Recordable
 {
+    use RecordableTrait,
+        Eventually;
+
     protected $table = 'pacientes';
 
     protected $fillable = [
@@ -18,6 +24,10 @@ class Paciente extends Model
         'direccion',
         'celular',
         'ars_id',
+    ];
+
+    protected $dates = [
+        'dob',
     ];
 
     /**

@@ -17,8 +17,10 @@ Route::get('paciente/create', [PacienteController::class, 'create'])
     ->breadcrumbs(function (Trail $trail) {
         $trail->push(__('Nuevo paciente'), route('admin.paciente.index'));
     });
+Route::get('paciente/get', [PacienteController::class, 'getDataTables'])
+    ->name('paciente.get');
 Route::post('paciente', [PacienteController::class, 'store'])->name('paciente.store');
-Route::get('paciente/{paciente}/show', [PacienteController::class, 'show'])->name('paciente.show');
+Route::get('paciente/{paciente}/show', [PacienteController::class, 'show']);
 Route::get('paciente/{paciente}/edit', [PacienteController::class, 'edit'])->name('paciente.edit');
 Route::patch('paciente/{paciente}', [PacienteController::class, 'update'])->name('paciente.update');
 Route::delete('paciente/{paciente}', [PacienteController::class, 'delete'])->name('paciente.delete');

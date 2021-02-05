@@ -18,6 +18,11 @@
             </x-slot>
 
             <x-slot name="headerActions">
+                <x-utils.link
+                    icon="la la-arrow-left"
+                    class="btn btn-light-danger font-weight-lighter mr-2"
+                    :href="route('admin.paciente.index')"
+                    :text="__('Regresar')" />
             </x-slot>
 
             <x-slot name="body">

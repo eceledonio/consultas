@@ -22,7 +22,7 @@ return [
         [
             'title' => 'Administración de Usuarios',
             'icon' => 'media/svg/icons/Communication/Shield-user.svg',
-            'bullet' => 'line',
+            'bullet' => 'dot',
             'can' => 'users.read',
             'root' => true,
             'parent_route' => 'admin.auth.user.*',
@@ -60,7 +60,7 @@ return [
         [
             'title' => 'Administración de Perfiles',
             'icon' => 'media/svg/icons/Communication/Shield-thunder.svg',
-            'bullet' => 'line',
+            'bullet' => 'dot',
             'can' => 'roles.read',
             'parent_route' => 'admin.auth.role.*',
             'root' => true,
@@ -84,7 +84,7 @@ return [
         [
             'title' => 'Logs de Errores',
             'icon' => 'media/svg/icons/Communication/Chat-error.svg',
-            'bullet' => 'line',
+            'bullet' => 'dot',
             'can' => 'errors.read',
             'root' => true,
             'submenu' => [
@@ -125,7 +125,7 @@ return [
         [
             'title' => 'Paciente',
             'icon' => 'media/svg/icons/Communication/Contact1.svg',
-            'bullet' => 'line',
+            'bullet' => 'dot',
             'can' => 'paciente.read',
             'root' => true,
             'new-tab' => true,
@@ -138,7 +138,7 @@ return [
                     'new-tab' => false,
                 ],
                 [
-                    'title' => 'Crear paciente',
+                    'title' => 'Nuevo paciente',
                     'page' => '',
                     'can' => 'pacientes.create',
                     'route' => 'admin.paciente.create',

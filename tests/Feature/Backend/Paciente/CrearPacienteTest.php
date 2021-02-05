@@ -10,6 +10,7 @@ class CrearPacienteTest extends TestCase
 {
     use RefreshDatabase;
 
+
     /** @test */
     public function an_admin_can_access_the_create_patient_page()
     {
