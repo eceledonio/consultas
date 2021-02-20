@@ -11,6 +11,7 @@ class Pais extends Model implements Recordable
 {
     use RecordableTrait,
         Eventually;
+
     protected $table = 'countries';
 
 

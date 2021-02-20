@@ -76,12 +76,14 @@ class PacienteController extends Controller
     {
         $page_title = __('Administración de paciente');
         $page_description = __('Visualizando paciente :nombres', ['nombres' => $paciente->nombres]);
+        $dateOfBirth = $paciente->dob;
+        $years = Carbon::parse($dateOfBirth)->age;
 
         return view('backend.paciente.show')
             ->withPaciente($paciente)
             ->with('page_title', $page_title)
-            ->with('page_description', $page_description);
-
+            ->with('page_description', $page_description)
+            ->with('years', $years);
     }
 
     public function getForDataTable()

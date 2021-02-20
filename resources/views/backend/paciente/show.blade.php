@@ -84,12 +84,12 @@
 
                 <tr>
                     <th class="align-middle font-weight-light">
-                        <b>{{ __('Fecha de nacimiento') }}</b>
+                        <b>{{ __('Edad') }}</b>
                     </th>
 
                     <td>
                         <span class="btn btn-light-info">
-                            {{ $paciente->dob }}
+                            {{ $years }}
                         </span>
                     </td>
                 </tr>
@@ -101,7 +101,7 @@
 
                     <td>
                             <span class="btn btn-light-info">
-                                {{ $paciente->pais_id }}
+                                {{ $paciente->pais->descripcion }}
                             </span>
                     </td>
                 </tr>
@@ -136,8 +136,8 @@
                     </th>
 
                     <td>
-                        <span class="btn btn-light-warning">
-                            {{$paciente->ars_id}}
+                        <span class="btn btn-light-primary">
+                            {{ $paciente->aseguradora->nombre }}
                         </span>
                     </td>
                 </tr>
