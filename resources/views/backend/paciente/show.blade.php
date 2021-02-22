@@ -30,7 +30,7 @@
                     </th>
 
                     <td class="symbol symbol-120 mr-3">
-                        <img src="https://preview.keenthemes.com/metronic/theme/html/demo1/dist/assets/media/users/blank.png" />
+                        <img src="https://gravatar.com/avatar/64e1b8d34f425d19e1ee2ea7236d3028?s=120&d=mp" />
                     </td>
                 </tr>
 
@@ -52,7 +52,7 @@
                     </th>
 
                     <td>
-                        <span class="btn btn-light-dark">
+                        <span class="btn btn-light-success">
                             {{ $paciente->nombres }}
                         </span>
                     </td>
@@ -64,7 +64,7 @@
                     </th>
 
                     <td>
-                        <span class="btn btn-light-dark">
+                        <span class="btn btn-light-success">
                             {{ $paciente->apellidos }}
                         </span>
                     </td>
@@ -76,7 +76,7 @@
                     </th>
 
                     <td>
-                        <span class="btn btn-light-dark">
+                        <span class="btn btn-light-warning">
                             {{ $paciente->sexo }}
                         </span>
                     </td>
@@ -88,7 +88,7 @@
                     </th>
 
                     <td>
-                        <span class="btn btn-light-info">
+                        <span class="btn btn-light-danger">
                             {{ $years }}
                         </span>
                     </td>

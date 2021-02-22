@@ -11,10 +11,10 @@
 @endpush
 
 @section('content')
-    <x-forms.post :action="route('admin.paciente.store')">
+{{ html()->modelForm($paciente, 'PATCH', route('admin.paciente.update', $paciente->id))->class('form-horizontal')->open() }}
         <x-backend.card>
             <x-slot name="header">
-                Registro de Pacientes
+                {{ __('Actualizar Paciente') }}
             </x-slot>
 
             <x-slot name="headerActions">
@@ -27,13 +27,11 @@
 
             <x-slot name="body">
                 <div class="row">
-
                     <div class="col-6">
                         <div class="form-group">
                             {{ html()->label(__('Nombre'))->for('nombre') }}
                             {{ html()->text('nombres')
                                 ->class('form-control')
-                                ->placeholder(__('Nombres'))
                                 ->attribute('maxlength', 70)
                                 ->autofocus() }}
                         </div>
@@ -44,7 +42,6 @@
                             {{ html()->label(__('Apellidos'))->for('apellido') }}
                             {{ html()->text('apellidos')
                                 ->class('form-control')
-                                ->placeholder(__('Apellidos'))
                                 ->attribute('maxlength', 70) }}
                         </div>
                     </div>
@@ -55,19 +52,18 @@
                         {{ html()->label(__('Sexo'))->for('sexo') }}
                         {{ html()->select('sexo')->options(['masculino' => 'Masculino', 'femenino' => 'Femenino'])
                             ->class('form-control')
-                            ->placeholder(__('Seleccione el sexo'))
                             ->id('sexo') }}
                     </div>
 
                     <div class="col-6">
                         <div class="form-group">
-                            <label>Fecha de nacimiento</label>
+                            {{ html()->label(__('Fecha de nacimiento'))->for('dob') }}
                             <div class="input-group date">
-                                <input type="text" class="form-control" id="dob" readonly="readonly" name="dob" placeholder="Seleccione una fecha">
+                                <input id="dob" class="form-control input-sm" type="text" name="dob" value="@unless(empty($paciente->dob) ){{ old('dob', $paciente->dob->format('d-m-Y')) }}@endunless" />
                                 <div class="input-group-append">
-                                <span class="input-group-text">
-                                    <i class="la la-calendar"></i>
-                                </span>
+                                    <span class="input-group-text">
+                                        <i class="la la-calendar"></i>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -80,7 +76,6 @@
                             {{ html()->label(__('Pais de nacimiento'))->for('pais_id') }}
                             {{ html()->select('pais', $paises->pluck('descripcion', 'id'))
                                 ->class('form-control')
-                                ->placeholder(__('Seleccione un pais'))
                                 ->id('paises')->attribute('data-live-search', true) }}
                         </div>
                     </div>
@@ -90,17 +85,17 @@
                             {{ html()->label(__('Dirección'))->for('direccion')}}
                             {{ html()->text('direccion')
                                 ->class('form-control')
-                                ->placeholder(__('Dirección'))
                                 ->attribute('maxlength', 70) }}
                         </div>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-6">
                         <div class="form-group">
                             {{ html()->label(__('Celular'))->for('celular')}}
                             {{ html()->text('celular')
-                                ->class('form-control celular')
+                                ->class('form-control')
                                 ->attribute('maxlength', 70) }}
                         </div>
                     </div>
@@ -110,7 +105,6 @@
                             <label>ARS</label>
                             {{ html()->select('ars_id', $seguros->pluck('nombre', 'id'))
                                 ->class('form-control')
-                                ->placeholder(__('Seleccione la ARS'))
                                 ->id('seguros')
                                 ->attribute('data-live-search', true)}}
                         </div>
@@ -120,11 +114,11 @@
             </x-slot>
             <x-slot name="footer">
                 <button class="btn btn-sm btn-primary float-right" type="submit">
-                    Guardar
+                    {{ __('Actualizar Paciente') }}
                 </button>
             </x-slot>
         </x-backend.card>
-    </x-forms.post>
+        {{ html()->closeModelForm() }}
 @endsection
 
 @push('after-scripts')

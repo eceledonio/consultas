@@ -199,7 +199,7 @@ class UserController extends Controller
      * @return mixed
      * @throws GeneralException
      */
-    public function destroy(UserRequest $request, User $user)
+    public function delete(UserRequest $request, User $user)
     {
         if ($user->id == 1 || $user->id == 2) {
             throw new GeneralException(__('No puedes eliminar el administrador.'));

@@ -10,9 +10,26 @@ use App\Models\Paciente\Seguro;
 use Illuminate\Http\Request;
 use DataTables;
 use Carbon\Carbon;
+use App\Repositories\Paciente\PacienteRepository;
 
 class PacienteController extends Controller
 {
+    /**
+     * @var PacienteRepository
+     */
+    protected $pacienteRepository;
+
+
+    /**
+     * UserController constructor.
+     *
+     * @param  PacienteRepository  $pacienteRepository
+     */
+    public function __construct(PacienteRepository $pacienteRepository)
+    {
+        $this->pacienteRepository = $pacienteRepository;
+    }
+
     public function getDataTables(Request $request)
     {
         return Datatables::of($this->getForDataTable())
@@ -55,19 +72,7 @@ class PacienteController extends Controller
 
     public function store(PacienteRequest $request)
     {
-
-        //dd($request->all());
-        $paciente = new Paciente();
-        $paciente->nombres = $request->nombres;
-        $paciente->apellidos = $request->apellidos;
-        $paciente->sexo = $request->sexo;
-        $paciente->dob = $request->dob;
-        $paciente->pais_id = $request->pais;
-        $paciente->direccion = $request->direccion;
-        $paciente->celular = $request->celular;
-        $paciente->ars_id = $request->ars_id;
-
-        $paciente->save();
+        $this->pacienteRepository->store($request->all());
 
         return redirect()->route('admin.paciente.create')->withFlashSuccess(__('El paciente se ha creado correctamente.'));
     }
@@ -85,6 +90,31 @@ class PacienteController extends Controller
             ->with('page_description', $page_description)
             ->with('years', $years);
     }
+
+    public function edit(Paciente $paciente)
+    {
+        //dd($paciente->dob);
+
+        $page_title = __('Administración de paciente');
+        $page_description = __('Actualizando paciente :nombres', ['nombres' => $paciente->nombres]);
+
+        $paises = Pais::all();
+        $seguros = Seguro::all();
+
+        return view('backend.paciente.edit', compact('paises', 'seguros'))
+            ->withPaciente($paciente)
+            ->with('page_title', $page_title)
+            ->with('page_description', $page_description);
+            -with($paises);
+    }
+
+    public function update(PacienteRequest $request, Paciente $paciente)
+    {
+        $this->pacienteRepository->update($paciente, $request->all());
+
+        return redirect()->route('admin.paciente.edit', $paciente)->withFlashSuccess(__("El usuario $paciente->nombres fue actualizado correctamente."));
+    }
+
 
     public function getForDataTable()
     {
