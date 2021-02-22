@@ -115,6 +115,12 @@ class PacienteController extends Controller
         return redirect()->route('admin.paciente.edit', $paciente)->withFlashSuccess(__("El usuario $paciente->nombres fue actualizado correctamente."));
     }
 
+    public function delete(Paciente $paciente)
+    {
+        $this->pacienteRepository->destroy($paciente);
+
+        return redirect()->route('admin.paciente.index')->withFlashSuccess(__("El paciente $paciente->nombres ha sido eliminado correctamente."));
+    }
 
     public function getForDataTable()
     {

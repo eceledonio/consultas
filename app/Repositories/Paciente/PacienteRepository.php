@@ -94,20 +94,21 @@ class PacienteRepository extends BaseRepository
     }
 
     /**
-     * @param  User  $user
+     * @param  Paciente  $paciente
      *
      * @return bool
      * @throws GeneralException
      */
-    public function destroy(User $user): bool
+    public function destroy(Paciente $paciente): bool
     {
-        if ($user->forceDelete()) {
-            event(new UserDestroyed($user));
+        if ($paciente) {
+            $paciente->delete();
 
             return true;
         }
 
-        throw new GeneralException(__('Hubo un problema al intentar eliminar permanentemente este usuario. Inténtelo de nuevo.'));
+        throw new GeneralException(__('Hubo un problema al intentar eliminar permanentemente este pac. Inténtelo de nuevo.'));
+
     }
 
 }
