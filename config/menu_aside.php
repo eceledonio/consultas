@@ -146,5 +146,15 @@ return [
                 ],
             ],
         ],
+        [
+            'title' => 'Consulta',
+            'icon' => 'media/svg/icons/Files/User-folder.svg',
+            'bullet' => 'dot',
+            'route' => 'admin.consulta.index',
+            'can' => 'paciente.read',
+            'root' => true,
+            'new-tab' => false,
+            
+        ],
     ],
 ];

@@ -2,7 +2,7 @@
 
 // All route names are prefixed with 'admin.'.
 use App\Http\Controllers\Backend\Paciente\PacienteController;
-
+use App\Http\Controllers\Backend\Paciente\ConsultaController;
 use Tabuna\Breadcrumbs\Trail;
 
 Route::redirect('/', '/admin/dashboard', 301)->name('redirect');
@@ -24,3 +24,5 @@ Route::get('paciente/{paciente}/show', [PacienteController::class, 'show'])->nam
 Route::get('paciente/{paciente}/edit', [PacienteController::class, 'edit'])->name('paciente.edit');
 Route::patch('paciente/{paciente}', [PacienteController::class, 'update'])->name('paciente.update');
 Route::delete('paciente/{paciente}', [PacienteController::class, 'delete'])->name('paciente.delete');
+
+

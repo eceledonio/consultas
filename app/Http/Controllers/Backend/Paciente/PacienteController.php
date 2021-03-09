@@ -74,7 +74,7 @@ class PacienteController extends Controller
     {
         $this->pacienteRepository->store($request->all());
 
-        return redirect()->route('admin.paciente.create')->withFlashSuccess(__('El paciente se ha creado correctamente.'));
+        return redirect()->route('admin.paciente.index')->withFlashSuccess(__('El paciente se ha creado correctamente.'));
     }
 
     public function show(Paciente $paciente)
