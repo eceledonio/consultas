@@ -8,12 +8,16 @@ use App\Models\Paciente\Paciente;
 use App\Models\Paciente\Pais;
 use App\Models\Paciente\Seguro;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use DB;
 
 class ConsultaController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, Paciente $paciente)
     {
+        $dateOfBirth = $paciente->dob;
+        $years = Carbon::parse($dateOfBirth)->age;
+
         $pacientes = null;
         if($request->has('paciente') && !empty($request->input('paciente')) ){
             $pacientes = $this->search($request->input('paciente'));
@@ -23,7 +27,8 @@ class ConsultaController extends Controller
             throw new GeneralException(__('Debe digitar un nombre o hcn de paciente'));
         }
 
-        return view('backend.consulta.index', compact('pacientes'));
+        return view('backend.consulta.index', compact('pacientes'))
+        ->with('years', $years);
 
     }
 
