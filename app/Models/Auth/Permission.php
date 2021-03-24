@@ -4,10 +4,10 @@ namespace App\Models\Auth;
 
 use Altek\Accountant\Contracts\Recordable;
 use Altek\Accountant\Recordable as RecordableTrait;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Spatie\Permission\Models\Permission as SpatiePermission;
 use Database\Factories\PermissionFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Permission\Models\Permission as SpatiePermission;
 
 /**
  * Class Permission.

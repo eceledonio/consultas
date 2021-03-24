@@ -78,10 +78,13 @@
                     <div class="col-6">
                         <div class="form-group">
                             {{ html()->label(__('Pais de nacimiento'))->for('pais_id') }}
-                            {{ html()->select('pais', $paises->pluck('descripcion', 'id'))
-                                ->class('form-control')
-                                ->placeholder(__('Seleccione un pais'))
+                            {{ html()->select('pais', $paises, null)
+                                ->class('form-control pais')
+                                ->placeholder(__('Seleccione'))
                                 ->id('paises')->attribute('data-live-search', true) }}
+
+
+
                         </div>
                     </div>
 
@@ -110,7 +113,7 @@
                             <label>ARS</label>
                             {{ html()->select('ars_id', $seguros->pluck('nombre', 'id'))
                                 ->class('form-control')
-                                ->placeholder(__('Seleccione la ARS'))
+                                ->placeholder(__('Seleccione'))
                                 ->id('seguros')
                                 ->attribute('data-live-search', true)}}
                         </div>
@@ -129,37 +132,48 @@
 
 @push('after-scripts')
     <script>
-        $.fn.selectpicker.Constructor.BootstrapVersion = '4';
-        $('#dob').pickadate({
-            format: 'd !de mmmm !de yyyy',
-            formatSubmit: 'yyyy-mm-dd',
-            hiddenName: true,
-            firstDay: 1,
-            selectMonths: true,
-            selectYears: 18,
-            max:true,
-            monthsFull: [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre' ],
-            monthsShort: [ 'ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic' ],
-            weekdaysFull: [ 'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado' ],
-            weekdaysShort: [ 'dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb' ],
-            today: 'Hoy',
-            clear: 'Borrar',
-            close: 'Cerrar',
-        });
-        @if(old('dob','') != '')
+        $(document).ready(function() {
+            // $.fn.selectpicker.Constructor.BootstrapVersion = '4';
+            $('#dob').pickadate({
+                format: 'd !de mmmm !de yyyy',
+                formatSubmit: 'yyyy-mm-dd',
+                hiddenName: true,
+                firstDay: 1,
+                selectMonths: true,
+                selectYears: 18,
+                max: true,
+                monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthsShort: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'],
+                weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                weekdaysShort: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'],
+                today: 'Hoy',
+                clear: 'Borrar',
+                close: 'Cerrar',
+            });
+            @if(old('dob','') != '')
             var picker = $('#dob').pickadate('picker')
-            picker.set('select', '{{ old('dob') }}', { format: 'yyyy-mm-dd' });
-        @endif
+            picker.set('select', '{{ old('dob') }}', {format: 'yyyy-mm-dd'});
+            @endif
 
-        $('#paises').selectpicker({
-            dropupAuto: false
-        });
+            $('.pais').selectpicker({
+                dropupAuto: false
+            });
 
-        $('#seguros').selectpicker({
-            dropupAuto: false
-        });
-        $(".celular").inputmask("mask", {
-            mask: "(999) 999-9999"
+            $('#seguros').selectpicker({
+                dropupAuto: false
+            });
+            $(".celular").inputmask("mask", {
+                mask: "(999) 999-9999"
+            });
+
+            $('select').change(function() {
+                if ($(this).children('option:first-child').is(':selected')) {
+                    $(this).addClass('placeholder');
+                } else {
+                    $(this).removeClass('placeholder');
+                }
+            });
+
         });
     </script>
 @endpush

@@ -2,6 +2,8 @@
 
 @section('title', __('Administrar Consultas'))
 
+
+
 @section('content')
     <x-backend.card>
         <x-slot name="header">
@@ -12,8 +14,9 @@
 
         </x-slot>
         <x-slot name="body">
+
             <div class="row">
-                <div class="col-xs-12 col-lg-6">
+                <div class="col-xs-12 col-lg-5">
                     <div class="panel panel-default">
                         <form action="" method="GET">
                             <div class="form-group">
@@ -33,27 +36,27 @@
                             @if ($pacientes->count() > 0)
                                 @foreach ($pacientes as $paciente)
                                     <div class="row ">
-                                        <div class="col-xl-10">
-                                            <a href="#" class="card card-custom  bg-secondary shadow-sm p-3 mb-5 bg-body rounded border border-secondary card-stretch gutter-b" style="background: #f7f7f7ea">
-                                                <div class="card-body">                                                  
-                                                        <i class="flaticon-avatar icon-5x text-success float-right"></i>
+                                        <div class="col-xl-8">
+                                            <a href="{{route('admin.consulta.create', $paciente->id)}}" class="card card-custom bg-white btn-shadow mb-3 bg-body rounded border  card-stretch gutter-b">
+                                                <div class="card-body">
+                                                        <i class="flaticon-avatar icon-5x text-info float-right"></i>
                                                     <div class="text-left">
-                                                        <h2 class="text-success">{{$paciente->id}}</h2>
-                                                        <span class="text-inverse-white font-weight-bolder font-size-h6">{{$paciente->nombres}} {{$paciente->apellidos}}</span>                                      
+                                                        <h2 class="text-info font-weight-bold">{{$paciente->id}}</h2>
+                                                        <span class="text-inverse-white font-weight-bolder font-size-h6">{{$paciente->nombres}} {{$paciente->apellidos}}</span>
                                                     </div>
 
-                                                    <div class="text-left">                                                      
+                                                    <div class="text-left">
                                                         <span class="text-inverse-white font-weight-bolder font-size-h9">{{$paciente->dob->format('d-m-Y')}} | </span>
-                                                        <span class="text-inverse-white font-weight-bolder font-size-h9">{{$years}} años </span>                          
+                                                        <span class="text-inverse-white font-weight-bolder font-size-h9">{{$years}} años </span>
                                                     </div>
-                                                   
-                                                    <div class="text-left">                                                      
-                                                        <span class="text-inverse-white font-weight-bolder font-size-h9">{{ucwords($paciente->sexo)}}</span>                                       
+
+                                                    <div class="text-left">
+                                                        <span class="text-inverse-white font-weight-bolder font-size-h9">{{ucwords($paciente->sexo)}}</span>
                                                     </div>
                                                 </div>
                                             </a>
                                         </div>
-                                        
+
                                     </div>
 
 

@@ -7,8 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Backend\User\UserRequest;
 use App\Models\Auth\User;
 use App\Repositories\Auth\UserRepository;
-use Throwable;
 use Illuminate\Support\Facades\Auth;
+use Throwable;
 
 /**
  * Class UserPasswordController.

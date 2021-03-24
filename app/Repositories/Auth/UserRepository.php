@@ -12,10 +12,10 @@ use App\Exceptions\GeneralException;
 use App\Models\Auth\User;
 use App\Repositories\BaseRepository;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Throwable;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * Class UserRepository.

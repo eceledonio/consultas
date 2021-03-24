@@ -7,10 +7,10 @@ use App\Http\Requests\PacienteRequest;
 use App\Models\Paciente\Paciente;
 use App\Models\Paciente\Pais;
 use App\Models\Paciente\Seguro;
-use Illuminate\Http\Request;
-use DataTables;
-use Carbon\Carbon;
 use App\Repositories\Paciente\PacienteRepository;
+use Carbon\Carbon;
+use DataTables;
+use Illuminate\Http\Request;
 
 class PacienteController extends Controller
 {
@@ -64,7 +64,9 @@ class PacienteController extends Controller
         $page_title = __('Administración de pacientes');
         $page_description = __('Nuevo Paciente');
 
-        $paises = Pais::all();
+//        $paises = Pais::pluck('descripcion', 'id')->toArray();
+        $paises = Pais::pluck('descripcion', 'id')->toArray();
+        //$paises = Pais::all();
         $seguros = Seguro::all();
 
         return view('backend.paciente.create', compact('paises', 'seguros', 'page_title', 'page_description'));
@@ -104,8 +106,8 @@ class PacienteController extends Controller
         return view('backend.paciente.edit', compact('paises', 'seguros'))
             ->withPaciente($paciente)
             ->with('page_title', $page_title)
-            ->with('page_description', $page_description);
-            -with($paises);
+            ->with('page_description', $page_description)
+            ->with($paises);
     }
 
     public function update(PacienteRequest $request, Paciente $paciente)

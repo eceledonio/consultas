@@ -5,11 +5,11 @@ namespace App\Models\Auth;
 use Altek\Accountant\Contracts\Recordable;
 use Altek\Accountant\Recordable as RecordableTrait;
 use App\Models\Auth\Traits\Method\RoleMethod;
+use Database\Factories\RoleFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Permission\Models\Role as SpatieRole;
-use Database\Factories\RoleFactory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class Role.

@@ -20,4 +20,3 @@ class Seguro extends Model implements Recordable
         'descripcion',
     ];
 }
-

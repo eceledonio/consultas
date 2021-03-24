@@ -7,8 +7,6 @@ use Altek\Accountant\Recordable as RecordableTrait;
 use Altek\Eventually\Eventually;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Models\Paciente\Seguro;
-use App\Models\Paciente\Pais;
 
 class Paciente extends Model implements Recordable
 {
@@ -45,8 +43,3 @@ class Paciente extends Model implements Recordable
         return $this->belongsTo(Seguro::class, 'ars_id');
     }
 }
-
-
-
-
-

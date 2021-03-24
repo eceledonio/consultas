@@ -3,11 +3,11 @@
 namespace App\Repositories\Paciente;
 
 use App\Exceptions\GeneralException;
+use App\Models\Paciente\Paciente;
 use App\Repositories\BaseRepository;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Throwable;
-use App\Models\Paciente\Paciente;
 
 /**
  * Class PacienteRepository.
@@ -66,7 +66,6 @@ class PacienteRepository extends BaseRepository
      */
     public function update(Paciente $paciente, array $data = []): Paciente
     {
-
         DB::beginTransaction();
 
         try {
@@ -80,8 +79,6 @@ class PacienteRepository extends BaseRepository
                 'celular' => $data['celular'],
                 'ars_id' => $data['ars_id'],
             ]);
-
-
         } catch (Exception $e) {
             DB::rollBack();
 
@@ -108,7 +105,5 @@ class PacienteRepository extends BaseRepository
         }
 
         throw new GeneralException(__('Hubo un problema al intentar eliminar permanentemente este pac. Inténtelo de nuevo.'));
-
     }
-
 }

@@ -21,4 +21,3 @@ class Pais extends Model implements Recordable
         'nacionalidad',
     ];
 }
-
