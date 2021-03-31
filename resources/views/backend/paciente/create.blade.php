@@ -79,9 +79,9 @@
                         <div class="form-group">
                             {{ html()->label(__('Pais de nacimiento'))->for('pais_id') }}
                             {{ html()->select('pais', $paises, null)
-                                ->class('form-control pais')
+                                ->class('form-control select2')
                                 ->placeholder(__('Seleccione'))
-                                ->id('paises')->attribute('data-live-search', true) }}
+                                ->id('paises')}}
 
 
 
@@ -112,10 +112,9 @@
                         <div class="form-group">
                             <label>ARS</label>
                             {{ html()->select('ars_id', $seguros->pluck('nombre', 'id'))
-                                ->class('form-control')
+                                ->class('form-control select2')
                                 ->placeholder(__('Seleccione'))
-                                ->id('seguros')
-                                ->attribute('data-live-search', true)}}
+                                ->id('seguros')}}
                         </div>
                     </div>
                 </div>
@@ -155,13 +154,13 @@
             picker.set('select', '{{ old('dob') }}', {format: 'yyyy-mm-dd'});
             @endif
 
-            $('.pais').selectpicker({
-                dropupAuto: false
-            });
+            // $('.pais').selectpicker({
+            //     dropupAuto: false
+            // });
 
-            $('#seguros').selectpicker({
-                dropupAuto: false
-            });
+            // $('#seguros').selectpicker({
+            //     dropupAuto: false
+            // });
             $(".celular").inputmask("mask", {
                 mask: "(999) 999-9999"
             });

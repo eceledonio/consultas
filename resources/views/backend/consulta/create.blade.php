@@ -61,7 +61,7 @@
                                 <span class="card-icon">
                                     <i class="flaticon2-correct icon-2x text-success"></i>
                                 </span>
-                                <h5>Antecedentes Personales</h5>
+                                <h5>Signos y Sintomas</h5>
                             </div>
                         </div>
 
@@ -76,7 +76,7 @@
                                 <span class="card-icon">
                                     <i class="flaticon2-correct icon-2x text-success"></i>
                                 </span>
-                                <h3 class="card-label">Antecedentes Familiares</h3>
+                                <h3 class="card-label">Diagnostico</h3>
                             </div>
                         </div>
 
@@ -91,7 +91,7 @@
                                 <span class="card-icon">
                                     <i class="flaticon2-correct icon-2x text-success"></i>
                                 </span>
-                                <h3 class="card-label">Diagnostico</h3>
+                                <h3 class="card-label">Plan</h3>
                             </div>
                         </div>
 
@@ -199,25 +199,7 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-xs-12 col-md-12">
-                    <div class="card card-custom card-border mt-7 border-secondary ">
-                        <div class="card-header bg-light">
-                            <div class="card-title">
-                                <span class="card-icon">
-                                    <i class="flaticon2-correct icon-2x text-success"></i>
-                                </span>
-                                <h3 class="card-label">Plan</h3>
-                            </div>
-                        </div>
-
-                        <div class="card-body">
-                            <textarea name=tratamiento" id="tratamiento" class="form-control" rows="3" placeholder="Digite el plan aqui"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+           
         </x-slot>
         <x-slot name="footer">
             <button class="btn btn-sm btn-success mr-5 ml-3 float-right" type="submit">

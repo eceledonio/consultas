@@ -106,8 +106,7 @@ class PacienteController extends Controller
         return view('backend.paciente.edit', compact('paises', 'seguros'))
             ->withPaciente($paciente)
             ->with('page_title', $page_title)
-            ->with('page_description', $page_description)
-            ->with($paises);
+            ->with('page_description', $page_description);
     }
 
     public function update(PacienteRequest $request, Paciente $paciente)
