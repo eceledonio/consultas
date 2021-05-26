@@ -57,7 +57,7 @@ $(function () {
     /**
      * Generic confirm form delete using Sweet Alert
      */
-    $('body').on('submit', 'form[name=delete_item]', function (e) {
+    $('body').on('submit', 'form[name=delete-item]', function (e) {
         e.preventDefault();
 
         const form = this;
@@ -75,7 +75,7 @@ $(function () {
         }).then((result) => {
             result.value && form.submit();
         });
-    }).on('click', 'a[name=confirm_item]', function (e) {
+    }).on('click', 'form[name=confirm-item]', function (e) {
         /**
          * Generic 'are you sure' confirm box
          */

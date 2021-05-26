@@ -42,8 +42,7 @@ mix.sass('resources/metronic/sass/style.scss', 'public/css/style.bundle.css', {
     .styles([
         'resources/css/custom.css'
     ], 'public/css/custom.css')
-    .js('resources/js/scripts.js', 'public/js/scripts.bundle.js')
-    .js('resources/custom/custom.js', 'public/js/custom.js');
+    .js('resources/js/scripts.js', 'public/js/scripts.bundle.js');
 
 // Custom 3rd party plugins
 (glob.sync('resources/plugins/custom/**/*.js') || []).forEach(file => {

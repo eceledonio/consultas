@@ -1,1 +1,188 @@
-!function(t){var e={};function n(o){if(e[o])return e[o].exports;var a=e[o]={i:o,l:!1,exports:{}};return t[o].call(a.exports,a,a.exports,n),a.l=!0,a.exports}n.m=t,n.c=e,n.d=function(t,e,o){n.o(t,e)||Object.defineProperty(t,e,{enumerable:!0,get:o})},n.r=function(t){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})},n.t=function(t,e){if(1&e&&(t=n(t)),8&e)return t;if(4&e&&"object"==typeof t&&t&&t.__esModule)return t;var o=Object.create(null);if(n.r(o),Object.defineProperty(o,"default",{enumerable:!0,value:t}),2&e&&"string"!=typeof t)for(var a in t)n.d(o,a,function(e){return t[e]}.bind(null,a));return o},n.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return n.d(e,"a",e),e},n.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},n.p="/",n(n.s=3)}({3:function(t,e,n){t.exports=n("a41e")},a41e:function(t,e){$.ajaxSetup({beforeSend:function(t,e){e.crossDomain||t.setRequestHeader("X-CSRF-Token",$('meta[name="csrf-token"]').attr("content"))}}),$((function(){var t=window.location.hash;function e(t){t.find('input[type="submit"]').removeAttr("disabled"),t.find('button[type="submit"]').removeAttr("disabled")}t&&$('ul.nav a[href="'+t+'"]').tab("show"),$(".nav-tabs li > a").on("click",(function(t){$(this).tab("show"),history.pushState(null,null,this.hash)})),$(window).bind("hashchange",(function(){$('ul.nav a[href^="'+document.location.hash+'"]').click()})),document.location.hash.length&&$(window).trigger("hashchange"),$("form").submit((function(){var t;return(t=$(this)).find('input[type="submit"]').attr("disabled",!0),t.find('button[type="submit"]').attr("disabled",!0),!0})),$("body").on("submit","form[name=delete-item]",(function(t){var n=this;t.preventDefault(),Swal.fire({title:"¿Estás seguro de que quieres eliminar este registro?",showCancelButton:!0,confirmButtonText:"Confirmar Eliminación",cancelButtonText:"Cancelar",allowOutsideClick:!1,allowEscapeKey:!1,icon:"warning"}).then((function(t){t.value?n.submit():e($(n))}))})).on("submit","form[name=confirm-item]",(function(t){var n=this;t.preventDefault(),Swal.fire({title:"¿Estás seguro de que quieres hacer esto?",showCancelButton:!0,confirmButtonText:"Continuar",cancelButtonText:"Cancelar",allowOutsideClick:!1,allowEscapeKey:!1,icon:"warning"}).then((function(t){t.value?n.submit():e($(n))}))})).on("click","a[name=confirm-item]",(function(t){var e=this;t.preventDefault(),Swal.fire({title:"¿Estás seguro de que quieres hacer esto?",showCancelButton:!0,confirmButtonText:"Continuar",cancelButtonText:"Cancelar",allowOutsideClick:!1,allowEscapeKey:!1,icon:"info"}).then((function(t){t.value&&window.location.assign($(e).attr("href"))}))})),$("table").on("draw.dt",(function(){$('[data-toggle="tooltip"]').tooltip(),$('[data-toggle="popover"]').popover({trigger:"hover"})})),$(".select2").select2({language:{noResults:function(){return"Lo sentimos, no hay resultados!"}},placeholder:function(){$(this).data("placeholder")}})}));var n,o,a={en:{path:"/custom/datatables/en"},es:{path:"/custom/datatables/es"}};n=$("html").attr("lang"),o=a[n].path+".json",$.ajax({url:o}).done((function(t){var e=$.extend({},t,a[n]);!function(t,n){t.extend(!0,n.defaults,{language:e})}(jQuery,jQuery.fn.dataTable)}))}});
+/*
+ * Place the CSRF token as a header on all pages for access in AJAX requests
+ */
+$.ajaxSetup({
+    beforeSend: function(xhr, type) {
+        if (!type.crossDomain) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        }
+    },
+    complete: function(response, status, xhr){
+        addDeleteForms();
+    }
+});
+
+/**
+ * Allows you to add data-method="METHOD to links to automatically inject a form
+ * with the method on click
+ *
+ * Example: <a href="{{route('customers.destroy', $customer->id)}}"
+ * data-method="delete" name="delete_item">Delete</a>
+ *
+ * Injects a form with that's fired on click of the link with a DELETE request.
+ * Good because you don't have to dirty your HTML with delete forms everywhere.
+ */
+function addDeleteForms() {
+    $('[data-method]').append(function () {
+        if (!$(this).find('form').length > 0) {
+            return "\n<form action='" + $(this).attr('href') + "' method='POST' name='delete_item' style='display:none'>\n" +
+                "<input type='hidden' name='_method' value='" + $(this).attr('data-method') + "'>\n" +
+                "<input type='hidden' name='_token' value='" + $('meta[name="csrf-token"]').attr('content') + "'>\n" +
+                '</form>\n';
+        } else { return ''; }
+    })
+        .attr('href', '#')
+        .attr('style', 'cursor:pointer;')
+        .attr('onclick', '$(this).find("form").submit();');
+}
+
+/**
+ * Place any jQuery/helper plugins in here.
+ */
+$(function () {
+    /**
+     * Add the data-method="delete" forms to all delete links
+     */
+    addDeleteForms();
+
+    /**
+     * Disable all submit buttons once clicked
+     */
+    $('form').submit(function () {
+        $(this).find('input[type="submit"]').attr('disabled', true);
+        $(this).find('button[type="submit"]').attr('disabled', true);
+        return true;
+    });
+
+    /**
+     * Generic confirm form delete using Sweet Alert
+     */
+    $('body').on('submit', 'form[name=delete-item]', function (e) {
+        e.preventDefault();
+
+        const form = this;
+        const link = $('a[data-method="delete"]');
+        const cancel = (link.attr('data-trans-button-cancel')) ? link.attr('data-trans-button-cancel') : 'Cancelar';
+        const confirm = (link.attr('data-trans-button-confirm')) ? link.attr('data-trans-button-confirm') : 'Eliminar';
+        const title = (link.attr('data-trans-title')) ? link.attr('data-trans-title') : 'Está seguro que desea eliminarlo?';
+
+        Swal.fire({
+            title: title,
+            showCancelButton: true,
+            confirmButtonText: confirm,
+            cancelButtonText: cancel,
+            icon: 'warning'
+        }).then((result) => {
+            result.value && form.submit();
+        });
+    }).on('click', 'form[name=confirm-item]', function (e) {
+        /**
+         * Generic 'are you sure' confirm box
+         */
+        e.preventDefault();
+
+        const link = $(this);
+        const title = (link.attr('data-trans-title')) ? link.attr('data-trans-title') : 'Está seguro que desea hacer esto?';
+        const cancel = (link.attr('data-trans-button-cancel')) ? link.attr('data-trans-button-cancel') : 'Cancelar';
+        const confirm = (link.attr('data-trans-button-confirm')) ? link.attr('data-trans-button-confirm') : 'Continuar';
+
+        Swal.fire({
+            title: title,
+            showCancelButton: true,
+            confirmButtonText: confirm,
+            cancelButtonText: cancel,
+            icon: 'info'
+        }).then((result) => {
+            result.value && window.location.assign(link.attr('href'));
+        });
+    });
+
+    // Change Tab on load
+    var hash = window.location.hash;
+    hash && $('ul.nav a[href="' + hash + '"]').tab('show');
+
+    $('.nav-tabs li > a').on('click', function (e) {
+        $(this).tab('show');
+        history.pushState(null,null, this.hash);
+    });
+
+    $(window).bind('hashchange', function(){
+        $('ul.nav a[href^="' + document.location.hash + '"]').click();
+    });
+
+    if (document.location.hash.length) {
+        $(window).trigger('hashchange');
+    }
+
+    $('table').on('draw.dt', function() {
+        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="popover"]').popover({
+            trigger: "hover"
+        });
+
+        $('.kt-selectpicker').selectpicker();
+
+        initDesktopTooltips();
+    });
+
+    $('.select2').select2({
+        language: {
+            noResults: function() {
+                return 'Lo sentimos, no hay resultados!';
+            }
+        },
+
+        placeholder: function(){
+            $(this).data('placeholder');
+        }
+    });
+
+    $.fn.selectpicker.Constructor.BootstrapVersion = '4';
+
+    $('.kt-selectpicker').selectpicker({
+        noneResultsText: 'No se encontraron resultados para: {0}'
+    });
+});
+
+let initDesktopTooltips = function() {
+    if (KTUtil.isInResponsiveRange('desktop')) {
+        $('[data-toggle="kt-tooltip-desktop"]').each(function() {
+            KTApp.initTooltip($(this));
+        });
+    } else {
+        $('[data-toggle="kt-tooltip-desktop"]').each(function() {
+            $(this).tooltip('dispose');
+        });
+    }
+};
+
+initDesktopTooltips();
+KTUtil.addResizeHandler(initDesktopTooltips);
+
+let languages = {
+    en: {
+        path: '/custom/datatables/en'
+    },
+    es: {
+        path: '/custom/datatables/es'
+    }
+};
+
+function getLanguage() {
+    let lang = $('html').attr('lang');
+    let url = languages[lang].path + '.json';
+
+    $.ajax({
+        url: url,
+    }).done(function (obj) {
+        let result = $.extend({}, obj, languages[lang]);
+        (function ($, DataTable) {
+            // Datatable global configuration
+            $.extend(true, DataTable.defaults, {
+                language: result
+            });
+        })(jQuery, jQuery.fn.dataTable);
+    });
+}
+
+getLanguage();

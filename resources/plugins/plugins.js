@@ -40,8 +40,8 @@ window.PerfectScrollbar = require('perfect-scrollbar/dist/perfect-scrollbar');
 // Sticky-js - A library for sticky elements written in vanilla javascript. Learn more: https://rgalus.github.io/sticky-js/
 window.Sticky = require('sticky-js');
 
-// Apexcharts - mBdern charting library that helps developers to create beautiful and interactive visualizations for web pages: https://apexcharts.com/
-window.ApexCharts = require('apexcharts/dist/apexcharts.min.js');
+// Select2 - Select2 is a jQuery based replacement for select boxes: https://select2.org/
+require('select2/dist/js/select2.full.js');
 
 // FormValidation - Best premium validation library for JavaScript. Zero dependencies. Learn more: https://formvalidation.io/
 window.FormValidation = require("../metronic/plugins/formvalidation/dist/amd/index.js");
@@ -91,9 +91,6 @@ require('pickadate/lib/picker.js');
 require('pickadate/lib/picker.date.js');
 require('pickadate/lib/picker.time.js');
 require('pickadate/lib/translations/es_ES.js');
-
-// Select2 - Select2 is a jQuery based replacement for select boxes: https://select2.org/
-require('select2/dist/js/select2.full.js');
 
 // Ion Rangeslider - Is an easy, flexible and responsive range slider with tons of options: http://ionden.com/a/plugins/ion.rangeSlider/
 require('ion-rangeslider/js/ion.rangeSlider.js');
