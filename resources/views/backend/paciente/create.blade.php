@@ -82,9 +82,6 @@
                                 ->class('form-control select2')
                                 ->placeholder(__('Seleccione'))
                                 ->id('paises')}}
-
-
-
                         </div>
                     </div>
 

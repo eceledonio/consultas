@@ -56,10 +56,7 @@
                                                 </div>
                                             </a>
                                         </div>
-
                                     </div>
-
-
                                 @endforeach
                             @else
                                 <div class="text-center">No se ha encontrado un paciente con el parametro de busqueda digitado.</div>

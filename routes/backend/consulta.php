@@ -17,3 +17,6 @@ Route::get('consulta/{paciente}/create', [ConsultaController::class, 'create'])
 //        $trail->parent('admin.consulta.index')
 //            ->push(__('Historia'), route('admin.consulta.create'));
 //    });
+
+Route::get('consulta/cie10', [ConsultaController::class, 'searchCIE10'])
+    ->name('get.cie10');

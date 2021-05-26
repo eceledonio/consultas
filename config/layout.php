@@ -281,6 +281,7 @@ return [
             'plugins/custom/prismjs/prismjs.bundle.js',
             'js/scripts.bundle.js',
             'plugins/custom/datatables/datatables.bundle.js',
+            'js/custom.js',
         ],
     ],
 

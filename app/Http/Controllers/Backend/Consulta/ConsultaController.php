@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend\Consulta;
 
 use App\Exceptions\GeneralException;
 use App\Http\Controllers\Controller;
+use App\Models\Consulta\TipoCie10;
 use App\Models\Paciente\Paciente;
 use Carbon\Carbon;
 use DB;
@@ -33,8 +34,9 @@ class ConsultaController extends Controller
     public function create(Request $request, $id)
     {
         $paciente = Paciente::findOrFail($id);
+        $diagnosticos = TipoCie10::all();
 
-        return view('backend.consulta.create')
+        return view('backend.consulta.create', compact('diagnosticos'))
             ->withPaciente($paciente);
     }
 
@@ -53,5 +55,30 @@ class ConsultaController extends Controller
             ->get();
 
         return $pacientes;
+    }
+
+    public function searchCIE10(Request $request)
+    {
+        $query = $request->input('q');
+        $query = implode('%', explode(' ', $query));
+        $list = TipoCie10::where('codigo', 'LIKE', "{$query}%")
+            ->orWhere('descripcion', 'LIKE', "%{$query}%")
+            ->take(30)
+            ->get();
+
+        $cie10 = [];
+
+        if ($list->count() > 0) {
+            foreach ($list as $diag) {
+                $cie10[] = [
+                    'id' => $diag->codigo,
+                    'text' => "{$diag->descripcion} ({$diag->codigo})",
+                ];
+            }
+        }
+
+        return response()->json([
+            'results' => $cie10,
+        ]);
     }
 }

@@ -23,9 +23,10 @@
             font-weight: 200;
             padding-left: 5px;
             padding-top: 20px !important;
-
         }
     </style>
+
+    <link rel="stylesheet" href="{{ asset('plugins/custom/bootstrap-select-ajax/ajax-bootstrap-select.min.css') }}">
 @endpush
 
 @section('content')
@@ -38,6 +39,67 @@
 
         </x-slot>
         <x-slot name="body">
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <div class="card card-custom card-border mt-9 border-secondary ">
+                        <div class="card-header bg-light">
+                            <div class="card-title">
+                                <span class="card-icon">
+                                    <i class="flaticon2-correct icon-2x text-success"></i>
+                                </span>
+                                <h5>Antecedentes</h5>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-4">
+                                <div id="antecedentes_personales" class="col-12">
+
+                                    <div class="col-lg-12 col-md-9 col-sm-12">
+                                        {{ html()->label(__('Diagnóstico Ingreso'))->for('diagnostico_ingreso') }}
+                                        <select class="form-control cie10" data-placeholder="Digite c&oacute;digo CIE10 o Descripci&oacute;n..." name="diagnostico_ingreso" data-width="100%">
+                                            <option value=""></option>
+                                        </select>
+
+                                    </div>
+
+                                    <div class="col-xl-6 col-lg-6 col-sm-12 mb-4">
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+
+                            <a href="javascript:;" id="btnAP" class="btn btn-sm font-weight-bolder btn-light-primary">
+                                <i class="la la-plus"></i>Antecedentes Personales
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-6">
+                    <div class="card card-custom card-border mt-9 border-secondary ">
+                        <div class="card-header bg-light">
+                            <div class="card-title">
+                                <span class="card-icon">
+                                    <i class="flaticon2-correct icon-2x text-success"></i>
+                                </span>
+                                <h5>Antecedentes</h5>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-4">
+                                <div id="antecedentes_personales" class="col-12">
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-xs-12 col-md-6">
                     <div class="card card-custom card-border mt-9 border-secondary ">
@@ -198,8 +260,6 @@
 
                 </div>
             </div>
-
-           
         </x-slot>
         <x-slot name="footer">
             <button class="btn btn-sm btn-success mr-5 ml-3 float-right" type="submit">
@@ -212,4 +272,30 @@
         </x-slot>
     </x-backend.card>
 @endsection
+
+@push('after-scripts')
+    <script>
+        $(document).ready(function () {
+            $('.cie10').select2({
+                html: true,
+                ajax:{
+                    url :  '{{ route('admin.get.cie10') }}',
+                    dataType: 'json',
+                    delay: 250,
+                },
+                minimumInputLength: 3,
+                language: {
+                    inputTooShort: function (args) {
+                        // args.minimum is the minimum required length
+                        // args.input is the user-typed text
+                        return 'Favor digitar 3 o mas caracteres...';
+                    },
+                }
+            });
+
+            //
+        });
+    </script>
+@endpush
+
 

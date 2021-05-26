@@ -102,7 +102,6 @@
         <livewire:scripts />
 
         @stack('after-scripts')
-        <script src="{{ asset('js/custom.js') }}"></script>
 
         <script>
             // Scroll to Top on session flash success
