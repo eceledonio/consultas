@@ -47,33 +47,39 @@
                                 <span class="card-icon">
                                     <i class="flaticon2-correct icon-2x text-success"></i>
                                 </span>
-                                <h5>Antecedentes</h5>
+                                <h5>Antecedentes Familiares</h5>
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="row mb-4">
                                 <div id="antecedentes_personales" class="col-12">
 
-                                    <div class="col-lg-12 col-md-9 col-sm-12">
-                                        {{ html()->label(__('Diagnóstico Ingreso'))->for('diagnostico_ingreso') }}
-                                        <select class="form-control cie10" data-placeholder="Digite c&oacute;digo CIE10 o Descripci&oacute;n..." name="diagnostico_ingreso" data-width="100%">
-                                            <option value=""></option>
-                                        </select>
+{{--                                    <div class="col-lg-12 col-md-9 col-sm-12">--}}
+{{--                                        {{ html()->label(__('Diagnóstico'))->for('diagnostico_ingreso') }}--}}
+{{--                                        <select class="form-control cie10" data-placeholder="Digite c&oacute;digo CIE10 o Descripci&oacute;n..." name="diagnostico_ingreso" data-width="100%" >--}}
+{{--                                            <option value=""></option>--}}
+{{--                                        </select>--}}
+{{--                                    </div>--}}
 
-                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">DIAGNOSTICO</div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <select class="form-control cie10" data-placeholder="Digite c&oacute;digo CIE10 o Descripci&oacute;n..." data-table="diagnosticos" style="width: 100%;">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
 
-                                    <div class="col-xl-6 col-lg-6 col-sm-12 mb-4">
+                                            <table class="table table-bordered table-hover rounded" id="diagnosticos">
+                                                <tbody>
 
+
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
-
-
                             </div>
-
-
-                            <a href="javascript:;" id="btnAP" class="btn btn-sm font-weight-bolder btn-light-primary">
-                                <i class="la la-plus"></i>Antecedentes Personales
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -291,9 +297,43 @@
                         return 'Favor digitar 3 o mas caracteres...';
                     },
                 }
+            })
+
+            //------------/
+            //------------//
+
+            $('.cie10').on('select2:select', function(e){
+                let allowContinue = true;
+                let codigo = $(this).children(':selected').val();
+                let descripcion = $(this).children(':selected').text();
+                let targetTable = $(this).data('table');
+
+                $(this).val('').trigger('change');
+
+
+                $.each( $(`#${targetTable} > tbody > tr`), function(k,v){
+                    if($(this).data('codigo') == codigo){
+                        swal("Error", "Ya ha seleccionado este diagnostico!", "error");
+                        allowContinue = false;
+                        return false;
+                    }
+                });
+
+                if(!allowContinue){
+                    return false;
+                }
+
+                $(`#${targetTable} > tbody`).append(`
+                    <tr id="${targetTable}cie10${codigo}" data-codigo="${codigo}">
+                        <td class="align-middle">
+                            ${descripcion}
+                            <input type="hidden" name="${targetTable}[${codigo}][codigo]" value="${codigo}" />
+                        </td>
+                        <td class="align-middle text-center"><button type="button" class="btn btn-xs red-thunderbird" onclick="$('#${targetTable}cie10${codigo}').remove();"><i class="fa fa-trash text-danger"></i></button></td>
+                    </tr>
+                `);
             });
 
-            //
         });
     </script>
 @endpush
