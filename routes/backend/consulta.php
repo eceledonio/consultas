@@ -18,5 +18,8 @@ Route::get('consulta/{paciente}/create', [ConsultaController::class, 'create'])
 //            ->push(__('Historia'), route('admin.consulta.create'));
 //    });
 
+Route::post('consulta', [ConsultaController::class, 'store'])
+    ->name('consulta.store');
+
 Route::get('consulta/cie10', [ConsultaController::class, 'searchCIE10'])
     ->name('get.cie10');

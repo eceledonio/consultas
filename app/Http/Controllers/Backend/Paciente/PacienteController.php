@@ -64,7 +64,7 @@ class PacienteController extends Controller
         $page_title = __('Administración de pacientes');
         $page_description = __('Nuevo Paciente');
 
-//        $paises = Pais::pluck('descripcion', 'id')->toArray();
+//      $paises = Pais::pluck('descripcion', 'id')->toArray();
         $paises = Pais::pluck('descripcion', 'id')->toArray();
         //$paises = Pais::all();
         $seguros = Seguro::all();

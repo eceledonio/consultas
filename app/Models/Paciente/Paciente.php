@@ -5,6 +5,7 @@ namespace App\Models\Paciente;
 use Altek\Accountant\Contracts\Recordable;
 use Altek\Accountant\Recordable as RecordableTrait;
 use Altek\Eventually\Eventually;
+//use App\Models\Consulta\Consulta;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Consulta\AntecedenteFamiliar;
@@ -32,6 +33,10 @@ class Paciente extends Model implements Recordable
         'dob',
     ];
 
+    protected $with = [
+      'antecedentesPesonales',
+    ];
+
     /**
      * @return BelongsTo
      */
@@ -45,13 +50,15 @@ class Paciente extends Model implements Recordable
         return $this->belongsTo(Seguro::class, 'ars_id');
     }
 
-    public function antecedentes_pesonales()
+    public function antecedentesFamiliares()
     {
-        return $this->hasMany(AntecedentePersonal::class, 'antecedente_personal_id');
+        return $this->hasMany(AntecedenteFamiliar::class);
     }
 
-    public function antecedentes_familiares()
+    public function antecedentesPesonales()
     {
-        return $this->hasMany(AntecedenteFamiliar::class, 'antecedente_familiar_id');
+        return $this->hasMany(AntecedentePersonal::class);
     }
+
+
 }

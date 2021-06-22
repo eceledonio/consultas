@@ -16,7 +16,6 @@ class CreateAntecedentesFamiliaresTable extends Migration
         Schema::create('antecedentes_familiares', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('paciente_id');
-            $table->unsignedInteger('consulta_id');
             $table->string('diagnostico');
             $table->string('parentesco');
             $table->timestamps();

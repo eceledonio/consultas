@@ -58,10 +58,11 @@ class PacienteRepository extends BaseRepository
     }
 
     /**
-     * @param  Paciente  $user
-     * @param  array  $data
+     * @param Paciente $paciente
+     * @param array $data
      *
      * @return Paciente
+     * @throws GeneralException
      * @throws Throwable
      */
     public function update(Paciente $paciente, array $data = []): Paciente
